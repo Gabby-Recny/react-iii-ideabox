@@ -1,56 +1,88 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import './Form.css';
 
-class Form extends Component {
-  constructor() {
-    super();
-    this.state = {
-      title: '',
-      description: ''
+const Form = (props) => {
+  const [ title, setTitle ] = useState('');
+  const [ description, setDescription ] = useState('');
+
+  
+    const submitIdea = event => {
+      event.preventDefault();
+      const newIdea = {
+        id: Date.now(),
+        title,
+        description,
+      }
+      props.addIdea(newIdea);
+      clearInputs();
     }
-  }
-
-  handleChange = event => {
-    this.setState({[event.target.name]: event.target.value})
-  }
-
-  submitIdea = event => {
-    event.preventDefault();
-    const newIdea = {
-      id: Date.now(),
-      ...this.state
+    
+   const clearInputs = () => {
+      setTitle('');
+      setDescription('');
     }
-    this.props.addIdea(newIdea);
-    this.clearInputs();
-  }
+  return (
+    <form>
+      <input
+        type='text'
+        placeholder='Title'
+        name='title'
+        value={ title }
+        onChange={event => setTitle(event.target.value)}
+      />
 
-  clearInputs = () => {
-    this.setState({ title: '', description: '' });
-  }
+      <input
+        type='text'
+        placeholder='Description'
+        name='description'
+        value={ description }
+        onChange={event => setDescription(event.target.value)}
+      />
 
-  render() {
-    return (
-      <form>
-        <input
-          type='text'
-          placeholder='Title'
-          name='title'
-          value={this.state.title}
-          onChange={event => this.handleChange(event)}
-        />
+    <button onClick={submitIdea}>SUBMIT</button>
+  </form>
 
-        <input
-          type='text'
-          placeholder='Description'
-          name='description'
-          value={this.state.description}
-          onChange={event => this.handleChange(event)}
-        />
-
-        <button onClick={event => this.submitIdea(event)}>SUBMIT</button>
-      </form>
-    )
-  }
+  )
 }
+
+
+// class Form extends Component {
+//   constructor() {
+//     super();
+//     this.state = {
+//       title: '',
+//       description: ''
+//     }
+//   }
+
+//   handleChange = event => {
+//     this.setState({[event.target.name]: event.target.value})
+//   }
+
+
+//   render() {
+//     return (
+//       <form>
+//         <input
+//           type='text'
+//           placeholder='Title'
+//           name='title'
+//           value={this.state.title}
+//           onChange={event => this.handleChange(event)}
+//         />
+
+//         <input
+//           type='text'
+//           placeholder='Description'
+//           name='description'
+//           value={this.state.description}
+//           onChange={event => this.handleChange(event)}
+//         />
+
+//         <button onClick={event => this.submitIdea(event)}>SUBMIT</button>
+//       </form>
+//     )
+//   }
+// }
 
 export default Form;
